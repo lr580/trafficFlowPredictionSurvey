@@ -67,8 +67,10 @@
 
     prior works 最常引用； derivative works 综述
 
-  - [paper digest](https://paper-digest.com) 生成摘要等信息
+    但是一个月只能用几次
 
+  - [paper digest](https://paper-digest.com) 生成摘要等信息
+  
   - [Stork文献鸟](https://storkapp.me)符合关键词的文献发给邮箱
 
 #### 整理
@@ -78,8 +80,6 @@
 - 工具：知网研学(E-study)、Endnote、Citavi、Citespace 等
 
 [知乎(Zotero及其教程-毕导)](https://www.zhihu.com/question/26857521/answer/2662236762) [三个工具比对](https://zhuanlan.zhihu.com/p/682379026)
-
-- 
 
 ### 写综述
 
