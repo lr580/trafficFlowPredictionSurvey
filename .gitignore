@@ -1,11 +1,18 @@
-*
-!.gitignore
-!资料搜集报告.md
-!misc.md
-!process.xlsx
-!内容整理.md
-!具体论文笔记.md
-!README.md
-!statThesis.py
-!论文统计表.xlsx
-!论文统计报告.txt
+*.docx
+*.pdf
+contact.md
+notes.md
+img/
+backup/
+相关资料/
+# *
+# !.gitignore
+# !资料搜集报告.md
+# !misc.md
+# !process.xlsx
+# !内容整理.md
+# !具体论文笔记.md
+# !README.md
+# !statThesis.py
+# !论文统计表.xlsx
+# !论文统计报告.txt
