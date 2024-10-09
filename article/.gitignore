@@ -7,3 +7,4 @@
 *.synctex(busy)
 *.toc
 *.out
+*.run.xml
