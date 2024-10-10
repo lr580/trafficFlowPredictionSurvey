@@ -1,6 +1,11 @@
 \documentclass{ctexart}
 \usepackage{hyperref}
 \usepackage[numbers, super]{natbib}
+\usepackage{longtable}
+\usepackage{tabu}
+\usepackage{makecell}
+% \usepackage{graphicx}
+% \usepackage{tabularx}
 \renewcommand{\cite}[1]{\textsuperscript{[\citenum{#1}]}}
 \begin{document}
 \title{交通流量预测数据集综述}
@@ -70,16 +75,54 @@ PeMS 数据集包含的站点和时间都比较庞大，所以研究者主要使
     \item[PeMS\cite{zhang_novel_2020}] 该子集没有命名，提供 $5$ 分钟时间区间的 7 区（洛杉矶）的 $205/1/1\sim 2015/5/31$ 的 $1681$ 个探测器数据。
     \item[SR99-S、I980-E\cite{liu_short-term_2017}] 从 10 区的 SR99-S 高速公路与 4 区奥克兰市（Oakland City）的 I980-E 街道在 $2017/9/4\sim2017/9/8$ 的数据。
     \item[I-405\cite{shao_traffic_2016}] 欧文中心大道（Irvine Center Drive）I-405 主干道第 2 车道的 $2014$ 年 $8$ 月的数据。
-    \item[PEMS97、PEMS140\cite{li_traffic_2023}] 该子集可以用于研究 COVID-19 疫情对交通流量的影响。提供了 $97+140$ 个节点在 $2020/4/1\sim2020/5/25$ 的 $30$ 天 $8640+7200$ 个长为 $5$ 分钟的时间段数据，并划分为了两个子集 PEMS97、PEMS140 用于训练和测试。
+    \item[PEMS97、PEMS140\cite{li_traffic_2023}] 该子集可以用于研究 COVID-19 疫情对交通流量的影响。提供了 $97+140$ 个节点在 $2020/4/1\sim2020/5/25$ 的 $30$ 天 $8640+7200$ 个长为 $5$ 分钟的时间段数据，并划分为了两个日期区间不同的子集 PEMS97、PEMS140 用于训练和测试。
 \end{description}
 
 % \subsubsection{METR-LA}
 % \subsubsection{Seattle Loop}
 此外，多数研究者会将 METR-LA\textsuperscript{\ref{pems-bay}} 与 PeMS-BAY 数据集一并使用，以研究交通速度预测问题。且 Seattle Loop\footnote{\url{https://github.com/zhiyongc/Seattle-Loop-Data}} 也是一个常见的交通速度数据集。然而，本文只研究交通流量预测，对这两个数据集的介绍可以参考这篇文献\cite{jiang_graph_2022}。
 
+本文收集的时间序列序列数据集如表 \ref{table:timedataset} 所示。
+
+% \begin{longtable}{|c|c|c|c|c|c|c|}
+\begin{footnotesize}
+\begin{longtabu} to \textwidth {|c|c|c|c|c|c|c|}% {|X|X|X|X|X|X|X|}
+    \caption{\normalsize 交通流量预测的时间序列数据集表格}\label{table:timedataset}
+    \\ \hline
+    出处 & 数据集名称 & 时间范围 & 地理位置 & 时间粒度 & 时间段数 & 节点数量 \\ \hline
+    \endfirsthead
+ 
+    \caption{交通流量预测的时间序列数据集表格（续表）}
+    \\ \hline
+    出处 & 数据集名称 & 时间范围 & 地理位置 & 时间粒度 & 时间段数 & 节点数量 \\ \hline
+    \endhead
+
+    \hline
+    \multicolumn{7}{|r|}{\textit{接下页}} \\ \hline % Continued on next page
+    \endfoot
+ 
+    \hline
+    \endlastfoot
+ 
+    \cite{guo_attention_2019} & PEMSD3 & $2018/9/1\sim2018/11/30$ & 美国加州 & $5$ 分钟 & $26208$ & $358$ \\ \hline
+    \cite{guo_attention_2019} & PEMSD4 & $2018/1/1\sim2018/2/28$ & 美国加州 & $5$ 分钟 & $16992$ & $307$ \\ \hline
+    \cite{guo_attention_2019} & PEMSD7 & $2017/5/1\sim2017/8/31$ & 美国加州 & $5$ 分钟 & $28224$ & $883$ \\ \hline
+    \cite{guo_attention_2019} & PEMSD8 & $2016/7/1\sim2016/8/31$ & 美国加州 & $5$ 分钟 & $17856$ & $170$ \\ \hline
+    \cite{zhang_semi-supervised_2020} & PEMS-S & $2018/5/1\sim2018/6/30$ 的工作日 & 美国加州 & $5$ 分钟 & $17568?$ & $228$ \\ \hline % 17568=24*12*61推断 TODO
+    \cite{chen_trafficstream_2021} & PEMS3-Stream & $2011\sim2017$ 的 $7/10\sim8/9$ & 美国加州 &  & $57600$ & $448$ \\ \hline
+    \cite{guo_online_2024} & BayArea & $2019/1/1\sim2019/12/30$ & 美国加州 &  &  & $699$ \\ \hline
+    \cite{zhang_novel_2020} &  & $205/1/1\sim2015/5/31$ & 美国加州 & $5$ 分钟 & $8640+7200$ & $1681$ \\ \hline
+    \cite{liu_short-term_2017} & SR99-S、I980-E & $2017/9/4\sim2017/9/8$ & 美国加州 &  &  &  \\ \hline
+    \cite{shao_traffic_2016} & I-405 & $2014/8/1\sim2014/8/31$ & 美国加州 &  &  &  \\ \hline
+    \cite{li_traffic_2023} & PEMS97 & $2020/4/1\sim2020/5/1$ & 美国加州 & $5$ 分钟 & $8640$ & $97$ \\ \hline
+    \cite{li_traffic_2023} & PEMS140 & $2020/5/1\sim2020/5/25$ & 美国加州 & $5$ 分钟 & $7200$ & $140$ \\ \hline
+\end{longtabu}
+\end{footnotesize}
 
 \subsection{总结}
 本文所有收集到的时间序列数据集如下表所示。(举例分析解读表格)
+
+
 
 \section{其他辅助数据介绍}
 介绍
