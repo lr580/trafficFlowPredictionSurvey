@@ -28,7 +28,7 @@
 在本文的剩余部分，将详细介绍这三种组成成分，分析它们的特征。随后对每种成分，具体介绍国内外的常用数据集，陈述这些数据集的特点，并列表格详细展示本文所搜集的数据集及其相关统计。
 
 \section{空间信息数据介绍}
-空间信息数据有多种划分方式，例如，Tedjopurnomo 等人\cite{tedjopurnomo_survey_2022} 提出，按照数据收集的方式，可以将数据分为点数据集和轨迹数据集。其中，点数据集是由探测器等固定不动的仪器从固定点收集的数据，而轨迹数据为使用 GPS 等定位技术在车辆上收集的数据。而 Jiang 和 Luo\cite{jiang_graph_2022} 提出，按照道路的类型和粒度可以把交通流量数据分为道路级数据、区域级数据、站点级数据。而在本文中，将交通流量数据里的空间信息数据按照空间结构划分为了欧氏空间的网格型数据和非欧空间的拓扑型数据。
+空间信息数据有多种划分方式，例如，Tedjopurnomo 等人\cite{T-ZS1} 提出，按照数据收集的方式，可以将数据分为点数据集和轨迹数据集。其中，点数据集是由探测器等固定不动的仪器从固定点收集的数据，而轨迹数据为使用 GPS 等定位技术在车辆上收集的数据。而 Jiang 和 Luo\cite{T-ZS2} 提出，按照道路的类型和粒度可以把交通流量数据分为道路级数据、区域级数据、站点级数据。而在本文中，将交通流量数据里的空间信息数据按照空间结构划分为了欧氏空间的网格型数据和非欧空间的拓扑型数据。
 
 原始的交通路网数据可以直接从在线地图服务、政府部门网站等获得，如 OpenStreetMap\footnote{\url{https://www.openstreetmap.org}}。通常会将原始数据进行预处理，然后与时间序列数据等其他组成成分整理并形成公开数据集，并发布在网络上，例如 GitHub\footnote{\url{https://github.com/}} 和 PaperWithCode\footnote{\url{https://paperswithcode.com/task/traffic-prediction}}。
 
@@ -42,7 +42,7 @@
 \section{时间序列数据集介绍}
 时间序列数据集的来源非常丰富，涵盖多个国内外主要城市，且许多地点有不止一个数据集。并且，对多数常用数据集，即使是同一个数据集，也有多个子集。这些子集通常有不同的时间范围与地点范围，也有可能收集不同的交通信息。它们通常是由原始数据集预处理而来，形成公开数据集并被多数研究者使用。
 
-时间序列数据集可以按照流量主体进一步分类，分为车流量、人流量、自行车流量。这里只列举车流量数据集，其他交通流量的数据集可以参考这些论文\cite{tedjopurnomo_survey_2022, jiang_graph_2022, jiang_graph_2023}。而车流量数据根据来源也可以细分为道路探测器数据、出租车数据、(TODO)等。
+时间序列数据集可以按照流量主体进一步分类，分为车流量、人流量、自行车流量。这里只列举车流量数据集，其他交通流量的数据集可以参考这些论文\cite{T-ZS1, T-ZS2, T-ZS29}。而车流量数据根据来源也可以细分为道路探测器数据、出租车数据、(TODO)等。
 % more cite?
 
 形式化来说，设有 $n$ 个节点，每个节点均有 $t$ 个时间段的流量数据，则时间序列数据集可以表示为一个 $n \times t$ 的矩阵。在多数数据集里，每个时间段的长度为 $5$ 分钟，也有一些是 $1$ 小时或其他长度的。各时间段的总时长多数在数个月到一两年内。大部分数据集涵盖了全天候数据，也有些数据集缺乏深夜时段、节假日数据等。数据集的节点数量一般在数百到数千不等。具体情况可以参见下文表格统计。
@@ -51,40 +51,44 @@
 
 \subsection{常用数据集介绍}
 \subsubsection{PeMS}
-PeMS（Caltrans Performance Measurement System）\footnote{\url{http://pems.dot.ca.gov/}\label{pems}}是研究最广泛的数据集之一，由美国加利福尼亚州主要公路的超过 $39000$ 个探测器收集而来，并从 $2001$ 年开始持续不断收集数据至今。这些数据每半分钟收集一次\cite{jiang_graph_2022}，并将其聚合成 $5$ 分钟一个时间段或其他粒度的数据\cite{tedjopurnomo_survey_2022}。常用的站点 $5$ 分钟数据包括时间戳（时间段的开始时刻，格式为 $24$ 小时制的 \verb|MM/DD/YYYY HH:MI:SS|）、总流量、流量加权平均速度、平均占用率、车道类型、行驶方向、高速公路号等多列组成\footnote{\url{https://pems.dot.ca.gov/?dnode=Clearinghouse&type=station_5min&district_id=3&submit=Submit}}。截至 $2024$ 年 $10$ 月为止，共有 $19601$ 个站点、$41236$ 里的路程\textsuperscript{\ref{pems}}。
+PeMS（Caltrans Performance Measurement System）\footnote{\url{http://pems.dot.ca.gov/}\label{pems}}是研究最广泛的数据集之一，由美国加利福尼亚州主要公路的超过 $39000$ 个探测器收集而来，并从 $2001$ 年开始持续不断收集数据至今。这些数据每半分钟收集一次\cite{T-ZS2}，并将其聚合成 $5$ 分钟一个时间段或其他粒度的数据\cite{T-ZS1}。常用的站点 $5$ 分钟数据包括时间戳（时间段的开始时刻，格式为 $24$ 小时制的 \verb|MM/DD/YYYY HH:MI:SS|）、总流量、流量加权平均速度、平均占用率、车道类型、行驶方向、高速公路号等多列组成\footnote{\url{https://pems.dot.ca.gov/?dnode=Clearinghouse&type=station_5min&district_id=3&submit=Submit}}。截至 $2024$ 年 $10$ 月为止，共有 $19601$ 个站点、$41236$ 里的路程\textsuperscript{\ref{pems}}。
 
-PeMS 数据集包含的站点和时间都比较庞大，所以研究者主要使用 PeMS 的一些代表性子集。可以看到，PeMS 数据列中既包含流量又包含速度，所以有一些子集，如 PeMS-BAY\footnote{\url{https://github.com/liyaguang/DCRNN}\label{pems-bay}}, PeMSD7M\footnote{\url{https://github.com/VeritasYin/STGCN_IJCAI-18}\label{pemsd7ml}}，PeMSD7L\textsuperscript{\ref{pemsd7ml}}, PEMSD10\cite{lv_temporal_2021}, PEMS-50/142/228\cite{diao_dynamic_2019} 是研究交通速度预测使用的，将不会被本文统计在内。值得注意的是，研究者通常也对 PeMSDx（$x=3,4,7,8$） 这 $4$ 个数据集会称呼成 PeMS0x，即例如 PeMSD4 又名为 PeMS04，在本文我们用前者来称呼。
+PeMS 数据集包含的站点和时间都比较庞大，所以研究者主要使用 PeMS 的一些代表性子集。可以看到，PeMS 数据列中既包含流量又包含速度，所以有一些子集，如 PeMS-BAY\footnote{\url{https://github.com/liyaguang/DCRNN}\label{pems-bay}}, PeMSD7M\footnote{\url{https://github.com/VeritasYin/STGCN_IJCAI-18}\label{pemsd7ml}}，PeMSD7L\textsuperscript{\ref{pemsd7ml}}, PEMSD10\cite{T-69}, PEMS-50/142/228\cite{T-109} 是研究交通速度预测使用的，将不会被本文统计在内。值得注意的是，研究者通常也对 PeMSDx（$x=3,4,7,8$） 这 $4$ 个数据集会称呼成 PeMS0x，即例如 PeMSD4 又名为 PeMS04，在本文我们用前者来称呼。
 
 % 是否提供图片，在内容整理.md里有图
 
 下面将具体介绍 PeMS 的一些子集。使用广泛的四个子集如下所示。
 
 \begin{description}
-    \item[PEMSD3]\footnote{\url{https://github.com/guoshnBJTU/ASTGNN}\label{pems0x}} 使用了中北部区域（North Central Area）的 $358$ 个传感器，时间跨度为 $2018$ 年的 $9$ 月到 $11$ 月，共 $26208$ 个时间区间，每个区间 $5$ 分钟，刚好覆盖了 $91$ 天。数据缺失率为 $0.672\%$\cite{dai_novel_2024}。
-    \item[PEMSD4\textsuperscript{\ref{pems0x}}] 使用了旧金山湾区（San Francisco Bay Area）的 $307$ 个传感器，时间跨度为 $2018$ 年 $1$ 月到 $2$ 月，共 $16992$ 个时间区间，每个区间 $5$ 分钟，刚好覆盖了 $59$ 天。数据缺失率为 $3.182\%$\cite{dai_novel_2024}。
-    \item[PEMSD7\textsuperscript{\ref{pems0x}}] 使用了洛杉矶区域（Los Angeles Area）的 $883$ 个传感器，时间跨度为 $2017$ 年的 $5$ 月到 $8$ 月，共 $28224$ 个时间区间，每个区间 $5$ 分钟，覆盖了 $98$ 天。数据缺失率为 $0.452\%$\cite{dai_novel_2024}。
-    \item[PEMSD8\textsuperscript{\ref{pems0x}}] 使用了圣贝纳迪诺区（San Bernardino Area）的 $170$ 个传感器，时间跨度为 $2016$ 年的 $7$ 月到 $8$ 月，共 $17856$ 个时间区间，每个区间 $5$ 分钟，刚好覆盖了 $62$ 天。数据缺失率为 $0.696\%$\cite{dai_novel_2024}。
+    \item[PEMSD3]\footnote{\url{https://github.com/guoshnBJTU/ASTGNN}\label{pems0x}} 使用了中北部区域（North Central Area）的 $358$ 个传感器，时间跨度为 $2018$ 年的 $9$ 月到 $11$ 月，共 $26208$ 个时间区间，每个区间 $5$ 分钟，刚好覆盖了 $91$ 天。数据缺失率为 $0.672\%$\cite{T-158}。
+    \item[PEMSD4\textsuperscript{\ref{pems0x}}] 使用了旧金山湾区（San Francisco Bay Area）的 $307$ 个传感器，时间跨度为 $2018$ 年 $1$ 月到 $2$ 月，共 $16992$ 个时间区间，每个区间 $5$ 分钟，刚好覆盖了 $59$ 天。数据缺失率为 $3.182\%$\cite{T-158}。
+    \item[PEMSD7\textsuperscript{\ref{pems0x}}] 使用了洛杉矶区域（Los Angeles Area）的 $883$ 个传感器，时间跨度为 $2017$ 年的 $5$ 月到 $8$ 月，共 $28224$ 个时间区间，每个区间 $5$ 分钟，覆盖了 $98$ 天。数据缺失率为 $0.452\%$\cite{T-158}。
+    \item[PEMSD8\textsuperscript{\ref{pems0x}}] 使用了圣贝纳迪诺区（San Bernardino Area）的 $170$ 个传感器，时间跨度为 $2016$ 年的 $7$ 月到 $8$ 月，共 $17856$ 个时间区间，每个区间 $5$ 分钟，刚好覆盖了 $62$ 天。数据缺失率为 $0.696\%$\cite{T-158}。
 \end{description}
 
 绝大部分研究者使用 PeMS 数据集时，都会采用上述 $4$ 的数据集的全部或部分，然而，仍有研究者会利用 PeMS 的其他子集。下面展示 PeMS 的一部分其他子集。
 
 \begin{description}
-    \item[PEMS-S\cite{zhang_spatio-temporal_2020}] 收集了 $2018$ 年 $5$ 月到 $6$ 月的所有工作日数据，每个时间区间 $5$ 分钟，$228$ 个传感器节点。%未知是不是flow
-    \item[PEMS3-Stream\cite{chen_trafficstream_2021}] 收集了中北部区域 $2011$ 年到 $2017$ 年的 $7$ 月 $10$ 日到 $8$ 月 $9$ 日的数据，可用以研究同一地区长期的交通流量变化。
-    \item[BayArea\cite{guo_online_2024}] 不同于著名的 PEMS-BAY，BayArea 数据集提供海湾地区（Bay Area）在 $2019/1/1\sim 2019/12/30$ 的 $699$ 个节点的流量数据。
-    \item[PeMS\cite{zhang_novel_2020}] 该子集没有命名，提供 $5$ 分钟时间区间的 7 区（洛杉矶）的 $205/1/1\sim 2015/5/31$ 的 $1681$ 个探测器数据。
-    \item[SR99-S、I980-E\cite{liu_short-term_2017}] 从 10 区的 SR99-S 高速公路与 4 区奥克兰市（Oakland City）的 I980-E 街道在 $2017/9/4\sim2017/9/8$ 的数据。
-    \item[I-405\cite{shao_traffic_2016}] 欧文中心大道（Irvine Center Drive）I-405 主干道第 2 车道的 $2014$ 年 $8$ 月的数据。
-    \item[PEMS97、PEMS140\cite{li_traffic_2023}] 该子集可以用于研究 COVID-19 疫情对交通流量的影响。提供了 $97+140$ 个节点在 $2020/4/1\sim2020/5/25$ 的 $30$ 天 $8640+7200$ 个长为 $5$ 分钟的时间段数据，并划分为了两个日期区间不同的子集 PEMS97、PEMS140 用于训练和测试。
+    \item[PEMS-S\cite{T-140}] 收集了 $2018$ 年 $5$ 月到 $6$ 月的所有工作日数据，每个时间区间 $5$ 分钟，$228$ 个传感器节点。%未知是不是flow
+    \item[PEMS3-Stream\cite{T-310}] 收集了中北部区域 $2011$ 年到 $2017$ 年的 $7$ 月 $10$ 日到 $8$ 月 $9$ 日的数据，可用以研究同一地区长期的交通流量变化。
+    \item[BayArea\cite{T-151}] 不同于著名的 PEMS-BAY，BayArea 数据集提供海湾地区（Bay Area）在 $2019/1/1\sim 2019/12/30$ 的 $699$ 个节点的流量数据。
+    \item[PeMS\cite{T-174}] 该子集没有命名，提供 $5$ 分钟时间区间的 7 区（洛杉矶）的 $205/1/1\sim 2015/5/31$ 的 $1681$ 个探测器数据。
+    \item[SR99-S、I980-E\cite{T-181}] 从 10 区的 SR99-S 高速公路与 4 区奥克兰市（Oakland City）的 I980-E 街道在 $2017/9/4\sim2017/9/8$ 的数据。
+    \item[I-405\cite{T-222}] 欧文中心大道（Irvine Center Drive）I-405 主干道第 2 车道的 $2014$ 年 $8$ 月的数据。
+    \item[PEMS97、PEMS140\cite{T-348}] 该子集可以用于研究 COVID-19 疫情对交通流量的影响。提供了 $97+140$ 个节点在 $2020/4/1\sim2020/5/25$ 的 $30$ 天 $8640+7200$ 个长为 $5$ 分钟的时间段数据，并划分为了两个日期区间不同的子集 PEMS97、PEMS140 用于训练和测试。
 \end{description}
 
 % \subsubsection{METR-LA}
 % \subsubsection{Seattle Loop}
-此外，多数研究者会将 METR-LA\textsuperscript{\ref{pems-bay}} 与 PeMS-BAY 数据集一并使用，以研究交通速度预测问题。且 Seattle Loop\footnote{\url{https://github.com/zhiyongc/Seattle-Loop-Data}} 也是一个常见的交通速度数据集。然而，本文只研究交通流量预测，对这两个数据集的介绍可以参考这篇文献\cite{jiang_graph_2022}。
+此外，多数研究者会将 METR-LA\textsuperscript{\ref{pems-bay}} 与 PeMS-BAY 数据集一并使用，以研究交通速度预测问题。且 Seattle Loop\footnote{\url{https://github.com/zhiyongc/Seattle-Loop-Data}} 也是一个常见的交通速度数据集。然而，本文只研究交通流量预测，对这两个数据集的介绍可以参考这篇文献\cite{T-ZS2}。
 
-本文收集的时间序列序列数据集如表 \ref{table:timedataset} 所示。
+% \begin{description}
+%     \item[T-drive] TTT
+% \end{description}
 
-% \begin{longtable}{|c|c|c|c|c|c|c|}
+\subsection{总结}
+本文收集的时间序列序列数据集如表 \ref{table:timedataset} 所示。(TODO 举例分析解读表格)
+
 \begin{footnotesize}
 \begin{longtabu} to \textwidth {|c|c|c|c|c|c|c|}% {|X|X|X|X|X|X|X|}
     \caption{\normalsize 交通流量预测的时间序列数据集表格}\label{table:timedataset}
@@ -104,25 +108,21 @@ PeMS 数据集包含的站点和时间都比较庞大，所以研究者主要使
     \hline
     \endlastfoot
  
-    \cite{guo_attention_2019} & PEMSD3 & $2018/9/1\sim2018/11/30$ & 美国加州 & $5$ 分钟 & $26208$ & $358$ \\ \hline
-    \cite{guo_attention_2019} & PEMSD4 & $2018/1/1\sim2018/2/28$ & 美国加州 & $5$ 分钟 & $16992$ & $307$ \\ \hline
-    \cite{guo_attention_2019} & PEMSD7 & $2017/5/1\sim2017/8/31$ & 美国加州 & $5$ 分钟 & $28224$ & $883$ \\ \hline
-    \cite{guo_attention_2019} & PEMSD8 & $2016/7/1\sim2016/8/31$ & 美国加州 & $5$ 分钟 & $17856$ & $170$ \\ \hline
-    \cite{zhang_semi-supervised_2020} & PEMS-S & $2018/5/1\sim2018/6/30$ 的工作日 & 美国加州 & $5$ 分钟 & $17568?$ & $228$ \\ \hline % 17568=24*12*61推断 TODO
-    \cite{chen_trafficstream_2021} & PEMS3-Stream & $2011\sim2017$ 的 $7/10\sim8/9$ & 美国加州 &  & $57600$ & $448$ \\ \hline
-    \cite{guo_online_2024} & BayArea & $2019/1/1\sim2019/12/30$ & 美国加州 &  &  & $699$ \\ \hline
-    \cite{zhang_novel_2020} &  & $205/1/1\sim2015/5/31$ & 美国加州 & $5$ 分钟 & $8640+7200$ & $1681$ \\ \hline
-    \cite{liu_short-term_2017} & SR99-S、I980-E & $2017/9/4\sim2017/9/8$ & 美国加州 &  &  &  \\ \hline
-    \cite{shao_traffic_2016} & I-405 & $2014/8/1\sim2014/8/31$ & 美国加州 &  &  &  \\ \hline
-    \cite{li_traffic_2023} & PEMS97 & $2020/4/1\sim2020/5/1$ & 美国加州 & $5$ 分钟 & $8640$ & $97$ \\ \hline
-    \cite{li_traffic_2023} & PEMS140 & $2020/5/1\sim2020/5/25$ & 美国加州 & $5$ 分钟 & $7200$ & $140$ \\ \hline
+    \cite{T-81} & PEMSD3 & $2018/9/1\sim2018/11/30$ & 美国加州 & $5$ 分钟 & $26208$ & $358$ \\ \hline
+    \cite{T-81} & PEMSD4 & $2018/1/1\sim2018/2/28$ & 美国加州 & $5$ 分钟 & $16992$ & $307$ \\ \hline
+    \cite{T-81} & PEMSD7 & $2017/5/1\sim2017/8/31$ & 美国加州 & $5$ 分钟 & $28224$ & $883$ \\ \hline
+    \cite{T-81} & PEMSD8 & $2016/7/1\sim2016/8/31$ & 美国加州 & $5$ 分钟 & $17856$ & $170$ \\ \hline
+    \cite{T-140} & PEMS-S & $2018/5/1\sim2018/6/30$ 的工作日 & 美国加州 & $5$ 分钟 & $17568?$ & $228$ \\ \hline % 17568=24*12*61推断 TODO
+    \cite{T-310} & PEMS3-Stream & $2011\sim2017$ 的 $7/10\sim8/9$ & 美国加州 &  & $57600$ & $448$ \\ \hline
+    \cite{T-151} & BayArea & $2019/1/1\sim2019/12/30$ & 美国加州 &  &  & $699$ \\ \hline
+    \cite{T-174} &  & $205/1/1\sim2015/5/31$ & 美国加州 & $5$ 分钟 & $8640+7200$ & $1681$ \\ \hline
+    \cite{T-181} & SR99-S、I980-E & $2017/9/4\sim2017/9/8$ & 美国加州 &  &  &  \\ \hline
+    \cite{T-222} & I-405 & $2014/8/1\sim2014/8/31$ & 美国加州 &  &  &  \\ \hline
+    \cite{T-348} & PEMS97 & $2020/4/1\sim2020/5/1$ & 美国加州 & $5$ 分钟 & $8640$ & $97$ \\ \hline
+    \cite{T-348} & PEMS140 & $2020/5/1\sim2020/5/25$ & 美国加州 & $5$ 分钟 & $7200$ & $140$ \\ \hline
+    
 \end{longtabu}
 \end{footnotesize}
-
-\subsection{总结}
-本文所有收集到的时间序列数据集如下表所示。(举例分析解读表格)
-
-
 
 \section{其他辅助数据介绍}
 介绍
