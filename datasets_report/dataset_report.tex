@@ -47,6 +47,8 @@
 
 形式化来说，设有 $n$ 个节点，每个节点均有 $t$ 个时间段的流量数据，则时间序列数据集可以表示为一个 $n \times t$ 的矩阵。在多数数据集里，每个时间段的长度为 $5$ 分钟，也有一些是 $1$ 小时或其他长度的。各时间段的总时长多数在数个月到一两年内。大部分数据集涵盖了全天候数据，也有些数据集缺乏深夜时段、节假日数据等。数据集的节点数量一般在数百到数千不等。具体情况可以参见下文表格统计。
 
+流量还可以细分为流入流量和流出流量（inflow and outflow），当空间被建模为网格时，常将流量分别表示为流入和流出流量，即对于每个网格节点的每个时间段，分别使用 $2$ 个数值记录流入流量与流出流量。但在拓扑图节点数据集上，通常不会区分流入与流出流量\cite{T-ZS45}。
+
 下面首先将详细介绍常用的数据集，列表统计本文收集的全部相关数据集，最后对数据集成分和特征及其对预测任务的影响作简单的讨论。
 
 \subsection{常用数据集介绍}
@@ -72,7 +74,7 @@ PeMS 数据集包含的站点和时间都比较庞大，所以研究者主要使
     \item[PEMS-S\cite{T-140}] 收集了 $2018$ 年 $5$ 月到 $6$ 月的所有工作日数据，每个时间区间 $5$ 分钟，$228$ 个传感器节点。%未知是不是flow
     \item[PEMS3-Stream\cite{T-310}] 收集了中北部区域 $2011$ 年到 $2017$ 年的 $7$ 月 $10$ 日到 $8$ 月 $9$ 日的数据，可用以研究同一地区长期的交通流量变化。
     \item[BayArea\cite{T-151}] 不同于著名的 PEMS-BAY，BayArea 数据集提供海湾地区（Bay Area）在 $2019/1/1\sim 2019/12/30$ 的 $699$ 个节点的流量数据。
-    \item[PeMS\cite{T-174}] 该子集没有命名，提供 $5$ 分钟时间区间的 7 区（洛杉矶）的 $205/1/1\sim 2015/5/31$ 的 $1681$ 个探测器数据。
+    \item[PeMS\cite{T-174}] 该子集没有命名，提供 $5$ 分钟时间区间的 7 区（洛杉矶）的 $2015/1/1\sim 2015/5/31$ 的 $1681$ 个探测器数据。
     \item[SR99-S、I980-E\cite{T-181}] 从 10 区的 SR99-S 高速公路与 4 区奥克兰市（Oakland City）的 I980-E 街道在 $2017/9/4\sim2017/9/8$ 的数据。
     \item[I-405\cite{T-222}] 欧文中心大道（Irvine Center Drive）I-405 主干道第 2 车道的 $2014$ 年 $8$ 月的数据。
     \item[PEMS97、PEMS140\cite{T-348}] 该子集可以用于研究 COVID-19 疫情对交通流量的影响。提供了 $97+140$ 个节点在 $2020/4/1\sim2020/5/25$ 的 $30$ 天 $8640+7200$ 个长为 $5$ 分钟的时间段数据，并划分为了两个日期区间不同的子集 PEMS97、PEMS140 用于训练和测试。
@@ -82,16 +84,39 @@ PeMS 数据集包含的站点和时间都比较庞大，所以研究者主要使
 % \subsubsection{Seattle Loop}
 此外，多数研究者会将 METR-LA\textsuperscript{\ref{pems-bay}} 与 PeMS-BAY 数据集一并使用，以研究交通速度预测问题。且 Seattle Loop\footnote{\url{https://github.com/zhiyongc/Seattle-Loop-Data}} 也是一个常见的交通速度数据集。然而，本文只研究交通流量预测，对这两个数据集的介绍可以参考这篇文献\cite{T-ZS2}。
 
-% \begin{description}
-%     \item[T-drive] TTT
-% \end{description}
+其他数据集。
+
+\begin{description}
+    \item[TaxiBJ\footnote{\url{https://github.com/Echo-Ji/ST-SSL_Dataset}}] 以 $32\times32=1024$ 个网格节点的流入和流出流量提供了中国北京超过 $34000$ 辆出租车在下面四个时间段每 $30$ 分钟一次共 $22459$ 个有效时间段的 GPS 轨迹数据：（1）$2013/7/1\sim2013/10/30$、（2）$2014/3/1\sim2014/6/30$、（3）$2015/3/1\sim2015/6/30$、（4）$2015/11/1\sim2016/4/10$\cite{T-ZS2}。该数据集是广泛被使用的一个出租车数据集，最初由 Zhang 等人在 $2017$ 年提出\cite{T-51}。然而，许多研究者只使用该数据集的子集，如一部分日期段\cite{T-274}、时间段（如不使用深夜）\cite{T-205}。
+    \item[TaxiCD\footnote{\url{https://js.dclab.run/v2/cmptDetail.html?id=175}}] 提供了中国成都在 $2014/8$ 的 $14864$ 辆出租车 $14$ 亿条 GPS 数据，每条数据由出租车 ID、经纬度、时间戳和是否空车\cite{T-ZS2}。有研究者\cite{T-366}也使用了该数据进行车辆到达时间预测。%，但未转化为时间序列数据。
+    % 该数据为原始数据，需要进一步处理。也有研究者提供了处理 \cite{O-32}。 TODO 可以 check 是否未转化
+    % 共有 $3636845$ 次出行，时间为 $2014/8/3\sim2014/8/30$\cite{T-307}。
+    \item[TaxiNYC\footnote{\url{https://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml}}] 提供了美国纽约市（New York）从 $2009$ 年开始一直更新到现在的黄色、绿色出租车等数据，包含起止时间位置、距离等\cite{T-ZS2}。该数据集可提供流入与流出数据，通常预处理成网格形式。同 PeMS 一样，该数据集有广泛的子集，然而研究者们并未集中主要使用某些子集，往往每个子集只有一到数个研究者使用，难以统一分析。这里只详细介绍两个代表性的子集：\textbf{NYCTaxi14\footnote{\url{https://github.com/liulingbo918/ATFM/tree/master/data/TaxiNYC}}} $15\times5=75$ 个网格节点，长为 $30$ 分钟的时间区间，时间跨度
+    为 $2014/1/1\sim2014/12/31$\cite{T-ZS45}，该子集也可以用于做交通需求分析\cite{T-153}。\textbf{NYCTaxi15} $10\times20=200$ 个网格节点，长为 $30$ 分钟的时间区间，时间跨度为 $2015/1/1\sim2015/5/1$\cite{T-ZS45}，而部分研究者\cite{T-162, T-368}使用了 $2015/1/1$ 到 $2015/3/1$ 的数据。除了上述子集外，还有研究者使用了其他的不同子集。例如，Sun 等人\cite{T-203}使用了 $2011/1/1\sim2016/6/30$ 的数据，Zhang 等人\cite{T-204}使用了 $2011\sim2014$ 年的数据，Fang 等人\cite{T-274}使用了 $2015$ 全年的数据，Bai 等人\cite{T-218}使用了 $2018/1\sim2018/4$ 的数据，Zhang 等人\cite{T-291}使用了 $2018\sim2019$ 两年的数据，Fang 等人\cite{T-301}使用了 $2016/1\sim2016/6$ 的数据，Deng 等人\cite{T-354} 只使用了黄色出租车数据，它们都用于流量预测。由于子集庞多但使用不广，这里并未列表统计这些子集，对这些年份数据研究感兴趣的读者可以查阅对应文献。
+    %除了上述子集外，还有 $2015$ 年 $1$ 月到 $3$ 月的 $NYCTaxi15$\cite{T-162, T-368}、
+    % \begin{itemize}
+        % \item 
+\\
+        % \item \textbf{NYCTaxi16} $16\times12=192$ 个网格节点，长为 $30$ 分钟的时间区间，时间跨度为 $2016/1/1\sim2016/2/29$\cite{T-ZS45}。
+    % \end{itemize}
+    % 然而，更多研究者使用 TaxiNYC 的数据集的其他子集，并形成了多样的不同子集，将它们详尽收录将较为冗长，因此这里仅作一些典例列举。
+    % TODO check 数据格式
+    \item[T-drive\footnote{\url{https://www.microsoft.com/en-us/research/publication/t-drive-trajectory-data-sample/}}] 提供了中国北京市的 $3.3$ 万余辆出租车在 $2015/2/1\sim2015/6/30$ 的轨迹数据，时间段区间是 $60$ 分钟，由微软亚洲研究院、北京大学发布（Microsoft Asia Research Institute and Peking University），并提供 $32\times32$ 个网格节点的流入和流出流量\cite{T-151}。在 LibCity 开源代码库\cite{O-32} 中提供了对该数据集的预处理。
+    % T-ZS2 说 6/2
+    \item[TaxiCHI\footnote{\url{https://data.cityofchicago.org/Transportation/Taxi-Trips-2016/bk5j-9eu2}}] 美国伊利诺伊州芝加哥市（Chicago, Illinois, USA）的 $2016/03/01\sim2016/04/30$ 的数据，使用 $11\times21=231$ 的网格节点\cite{T-301}。
+    \item[SIP\cite{T-92}] 中国苏州工业园区（Suzhou Industrial Park，SIP）的交通流量、速度数据，还可以与新浪微博交通事故数据集结合进一步分析，有 $108$ 个区域和 $1399k$ 条原始数据\cite{T-92}。可以形成 $12\times5=60$ 网格节点，$30$ 分钟时间段间隔的 $2017$ 年 $1$ 月到 $3$ 月数据，也可以分析交通需求\cite{T-283}。
+    \item[SG-TAXI\cite{T-292}] 新加坡超过 $2$ 万出租车的 GPS 轨迹数据，由新加坡陆路交通管理局（Singapore Land Transport Authority）提供，收集了 $8$ 周 $2016/3/14\sim2016/5/8$ 的数据，由 $2404$ 个路段组成。与处理后组成 $15$ 分钟时间段的交通流数据。
+    \item[Taxi-Rome\footnote{\url{https://crawdad.org/roma/taxi/20140717}}] 超过 $30$ 天的 $320$ 辆出租车在意大利罗马的 GPS 轨迹数据，$32\times32=1024$ 个网格节点，$3$ 分钟的时间段跨度，$14400$ 条数据\cite{T-297}。
+\end{description}
+
+一些交通速度预测的知名数据集：SHSpeed\footnote{\url{https://github.com/xxArbiter/grnn}}、SZ-Taxi\footnote{\url{https://github.com/lehaifeng/T-GCN}\label{t-gcn}}。
 
 \subsection{总结}
-本文收集的时间序列序列数据集如表 \ref{table:timedataset} 所示。(TODO 举例分析解读表格)
+本文收集的时间序列序列数据集如表 \ref{table:timedataset} 所示。其中粒度是指每个时间段的长度，单位为分钟，例如时间粒度为 $5$ 代表每五分钟统计一次流量数据。(TODO 举例分析解读表格)
 
 \begin{footnotesize}
 \begin{longtabu} to \textwidth {|c|c|c|c|c|c|c|}% {|X|X|X|X|X|X|X|}
-    \caption{\normalsize 交通流量预测的时间序列数据集表格}\label{table:timedataset}
+    \caption{交通流量预测的时间序列数据集表格}\label{table:timedataset}
     \\ \hline
     出处 & 数据集名称 & 时间范围 & 地理位置 & 时间粒度 & 时间段数 & 节点数量 \\ \hline
     \endfirsthead
@@ -107,7 +132,7 @@ PeMS 数据集包含的站点和时间都比较庞大，所以研究者主要使
  
     \hline
     \endlastfoot
- 
+
     \cite{T-81} & PEMSD3 & $2018/9/1\sim2018/11/30$ & 美国加州 & $5$ 分钟 & $26208$ & $358$ \\ \hline
     \cite{T-81} & PEMSD4 & $2018/1/1\sim2018/2/28$ & 美国加州 & $5$ 分钟 & $16992$ & $307$ \\ \hline
     \cite{T-81} & PEMSD7 & $2017/5/1\sim2017/8/31$ & 美国加州 & $5$ 分钟 & $28224$ & $883$ \\ \hline
@@ -115,14 +140,29 @@ PeMS 数据集包含的站点和时间都比较庞大，所以研究者主要使
     \cite{T-140} & PEMS-S & $2018/5/1\sim2018/6/30$ 的工作日 & 美国加州 & $5$ 分钟 & $17568?$ & $228$ \\ \hline % 17568=24*12*61推断 TODO
     \cite{T-310} & PEMS3-Stream & $2011\sim2017$ 的 $7/10\sim8/9$ & 美国加州 &  & $57600$ & $448$ \\ \hline
     \cite{T-151} & BayArea & $2019/1/1\sim2019/12/30$ & 美国加州 &  &  & $699$ \\ \hline
-    \cite{T-174} &  & $205/1/1\sim2015/5/31$ & 美国加州 & $5$ 分钟 & $8640+7200$ & $1681$ \\ \hline
+    \cite{T-174} &  & $2015/1/1\sim2015/5/31$ & 美国加州 & $5$ 分钟 & $8928$ & $1681$ \\ \hline
+    % 8928=12*24*31推断 TODO
     \cite{T-181} & SR99-S、I980-E & $2017/9/4\sim2017/9/8$ & 美国加州 &  &  &  \\ \hline
     \cite{T-222} & I-405 & $2014/8/1\sim2014/8/31$ & 美国加州 &  &  &  \\ \hline
     \cite{T-348} & PEMS97 & $2020/4/1\sim2020/5/1$ & 美国加州 & $5$ 分钟 & $8640$ & $97$ \\ \hline
     \cite{T-348} & PEMS140 & $2020/5/1\sim2020/5/25$ & 美国加州 & $5$ 分钟 & $7200$ & $140$ \\ \hline
-    
+    \cite{T-51} & TaxiBJ & $2013/7/1\sim2016/4/10$ 的四个子集 & 中国北京 & $30$ 分钟 & $22459$ & $1024$ \\ \hline
+    \cite{T-307} & TaxiCD & $2014/8/3\sim2014/8/30$ & 中国成都 &  &  &  \\ \hline
+    \cite{T-367} & TaxiNYC14 & $2014/1/1\sim2014/12/31$ & 美国纽约 & $30$ 分钟 & $17520$ & $75$ \\ \hline
+    % 17520 是 h5py 读 https://github.com/liulingbo918/ATFM/blob/master/data/TaxiNYC/NYC2014.h5 行数
+    \cite{T-153} & TaxiNYC15 & $2015/1/1\sim2015/5/1$ & 美国纽约 & $30$ 分钟 & $5760$ & $200$ \\ \hline
+    % 5760=24*2*120，也是 https://github.com/tangxianfeng/STDN 里统计行数sum(2,x)得到的
+    \cite{T-97} & T-drive & $2015/2/1\sim2015/6/30$ & 中国北京 & $60$ 分钟 & $6300$ & $1024$ \\ \hline
+    \cite{T-301} & TaxiCHI & $2016/03/01\sim2016/04/30$ & 美国芝加哥 &  &  & $231$ \\ \hline
+    \cite{T-92} & SIP & $2017/1/1\sim2017/3/31$ & 中国苏州 & $30$ 分钟 & $4320$ & $60$ \\ \hline
+    %4320=48*90
+    \cite{T-292} & SG-TAXI & $2016/3/14\sim2016/5/8$ & 新加坡 & $15$ 分钟 & $6240$ & $2404$ \\ \hline
+    %6240=24*4*65
+    \cite{T-297} & Taxi-Rome & $2014/7/17$ 超过 $30$ 天 & 意大利罗马 & $3$ 分钟 & $14400$ & $1024$ \\ \hline
 \end{longtabu}
 \end{footnotesize}
+
+
 
 \section{其他辅助数据介绍}
 介绍
