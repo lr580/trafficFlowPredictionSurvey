@@ -21,7 +21,7 @@
 \input{libs/code_style.tex}
 
 % 作者信息
-\author[]{\large 覃梓鑫}
+\author[Zixin Qin]{\large 覃梓鑫}
 
 \begin{frame}
   % 标题页
@@ -109,18 +109,6 @@
   \end{figure}
 \end{frame}
 
-\begin{frame}{主流技术}
-  早期主要使用统计模型(如 ARIMA)与机器学习(如 kNN、SVR)。\cite{T-ZS1}
-
-  现在主要使用深度学习模型，可以按时间特征和空间特征处理来讨论。
-  \begin{itemize}
-    \item 对时间特征，主要使用 RNN，例如 GRU、LSTM、BiLSTM 等，可以修改 LSTM 密度核为卷积、GRU 矩阵乘法为扩散卷积等。
-    
-    也可以使用 CNN、注意力机制、Transformer 等技术处理。
-    \item 对空间特征：针对网格节点，主要使用 CNN，如 1/2/3D CNN 的多个变式；针对图节点，主要使用 GNN，有图卷积、图注意力、图自编码器、图 GAN 等。
-  \end{itemize}
-\end{frame}
-
 \begin{frame}{相关类似问题}
   下列问题的场景与技术与交通车流量预测相关，简要介绍如下。
   \begin{itemize}
@@ -132,18 +120,144 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}{主流技术}
+  早期主要使用统计模型(如 ARIMA)与机器学习(如 kNN、SVR)。\cite{T-ZS1}
+
+  现在主要使用深度学习模型，可以按时间特征和空间特征处理来讨论。
+  \begin{itemize}
+    % \item 对时间特征，主要使用 RNN，例如 GRU、LSTM、BiLSTM 等，可以修改 LSTM 密度核为卷积、GRU 矩阵乘法为扩散卷积等。
+    % 也可以使用 CNN、注意力机制、Transformer 等技术处理。
+    % \item 对空间特征：针对网格节点，主要使用 CNN，如 1/2/3D CNN 的多个变式；针对图节点，主要使用 GNN，有图卷积、图注意力、图自编码器、图 GAN 等。
+    \item 对时间特征，主要使用 RNN，也可以使用 CNN、注意力机制、Transformer 等技术处理。
+    \item 对空间特征：
+    \begin{itemize}
+      \item 针对网格节点，主要使用 CNN，也可用注意力等。
+      \item 针对图节点，主要使用 GNN，结合卷积、自编码器等技术。
+    \end{itemize}
+  \end{itemize}
+
+  我们将在下面具体介绍这些深度学习技术在交通流量预测的具体应用。
+\end{frame}
+
 \section{主流技术}
 
 \subsection{时间方面}
 
-\begin{frame}{写2}
-  abc
+\begin{frame}{RNN 简介}
+  循环神经网络(\textbf{R}ecurrent \textbf{N}eural \textbf{N}etwork, RNN)广泛用于处理时间序列数据。其技术发展下图\ref{fig:rnn-develop}所示。
+
+  RNN 的优点为长短的时间依赖都可以良好记忆，但易产生梯度消失与爆炸问题，且训练时间长。\cite{T-ZS1}
+  \begin{figure}
+    \centering
+    \includegraphics[height=80pt]{img/rnn-develop.png}
+    \caption{RNN技术的发展\cite{T-ZS25}}\label{fig:rnn-develop}
+    % 或 T-ZS31 的图
+  \end{figure}
+\end{frame}
+
+\begin{frame}{RNN 具体使用举例}
+  常用的两种 RNN 为 LSTM(\textbf{L}ong \textbf{S}hort-\textbf{T}erm \textbf{M}emory)和GRU(\textbf{G}ated \textbf{R}ecurrent \textbf{U}nit)。包括但不限于下面的使用思路，可以只学习时间特征，也可以同时学习时空特征。
+  \begin{itemize}
+    \item 直接使用。用GRU学习时间特征\cite{T-36}。二维LSTM直接表示时空\cite{T-46}。
+    \item 多个RNN。用2个LSTM分别学习短时间特征，周期时间特征\cite{T-3}。
+    
+    RNN 输入可能过长，因此只选取多个粒度的代表性数据，分别训练多个粒度的 RNN 组合，如与其输入很长的连续小时，不如输入代表性短的几个小时，几个天，几个周结合起来。\cite{T-ZS1}
+    \item 修改结构。如GRU矩阵乘法改为扩散卷积\cite{T-40}，LSTM 密度核改成卷积来同时捕获时空\cite{T-30}。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{TCN}
+  卷积神经网络(\textbf{C}onvolutional \textbf{N}eural \textbf{N}etworks, CNN)主要用于学习网格空间数据的特征，但也可以用于学习时间序列，即 TCN(\textbf{T}emporal \textbf{C}onvolutional \textbf{N}etwork)。
+
+  CNN 的优点为不全连接参数少，可以权重共享，结构简单，可并行计算，梯度稳定；缺点为难以直接处理图结构。\cite{T-ZS1, T-ZS2}
+
+  % TCN 与 CNN 的区别
+
+  尽管常规来说是 CNN 处理空间与 RNN 处理时间结合，但 CNN 也能处理时间，具体使用例子：如2D CNN 矩阵同时使用时空数据(一维时间、一维空间)\cite{T-33}；3D CNN 三个维度分别是空间、小时、天数\cite{T-52}；或多个 CNN 分别获取小时、天、周粒度的数据\cite{T-51}。
 \end{frame}
 
 \subsection{空间方面}
 
-\begin{frame}{写22}
-  abc
+\begin{frame}{CNN}
+  对网格节点较为适用，将每个节点看成一个像素，像素值是流量大小，整个网格看成一张图片，则很好适应 CNN 的应用场景。
+
+  例如，1D CNN 将地理区域表示成一条线\cite{T-3}，2D CNN 则将区域表示成二维平面\cite{T-1}。还可以同时表示时间与空间信息，即将某些维度作时间维度。
+
+  对图节点，常用图卷积网络或其他 GNN 技术处理。CNN 技术在约 2020 年前是交通流量预测空间特征的主流技术，然而，近年来大部分模型多使用 GNN 取代 CNN 处理空间特征。
+\end{frame}
+
+\begin{frame}{GNN}
+  GNN(\textbf{G}raph \textbf{N}eural \textbf{N}etwork) 能更好地直接表征真实道路拓扑结构，直接学习一张图的特征。通常将路交点建模成节点，道路建立成边以构成一张非欧图。比网格数据更适用，因为网格的直线距离短的路不一定关联最大，能表达比网格更复杂的实体联系\cite{T-ZS1,T-ZS2}。
+
+  GNN 的优点为对图结构的表征能力更强，缺点为实现复杂、数据预处理等步骤繁琐\cite{T-ZS1}。GNN 的发展如图\ref{fig:gnn-develop}所示。
+  \begin{figure}
+    \centering
+    \includegraphics[height=80pt]{img/gnn-develop.png}
+    \caption{GNN技术的发展\cite{T-ZS25}}\label{fig:gnn-develop}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{GNN 建模方式}
+  通常建立静态图，如基于真实世界路网的自然图，或者基于节点相似性的相似图，但也可以建立从数据中学习的动态图。边权可以表示为直接连接(01矩阵)或几分钟内可达连一条边、距离、相似性(交通模式或功能相似)。它们各有优缺点和应用场合，也可以结合起来做多图建模。\cite{T-ZS2}
+
+  从道路建模来看，可以建立为探测器图、路口图、车道图，如图\ref{fig:gnn-build}所示。
+  \begin{figure}
+    \centering
+    \includegraphics[height=80pt]{img/gnn-build.png}
+    \caption{GNN建图方式\cite{T-ZS20}}\label{fig:gnn-build}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{空间域图卷积网络}
+  基于空间域的图卷积网络将图中的顶点按照某种规则重新排列成特定的网格形式，使其可以直接在空间域上进行卷积运算。\cite{T-ZS37}例子如下。
+
+  \begin{itemize}
+    \item DCRNN(\textbf{D}iffusion \textbf{C}onvolutional \textbf{R}ecurrent \textbf{N}eural \textbf{N}etwork)\cite{T-40}。分别使用图卷积网络和 RNN 学习时空特征，建立距离矩阵，引入了扩散卷积进行有向图处理。是基准模型之一，存在多个改版。
+    \item STGCN(\textbf{S}patio-\textbf{T}emporal \textbf{G}raph \textbf{C}onvolutioSnal \textbf{N}etwork)\cite{T-28}。堆叠多个时空卷积块，每个块连接两个时间卷积层和一个图卷积层，使用ChebNet作为图卷积操作，CNN代替RNN获取时间特征加快了训练时间。是基准模型之一，有多个变种如引入注意力的 ASTGCN\cite{T-81}。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{频谱域图卷积网络}
+  频谱域图卷积网络将空间域的图信号变换到频谱域，使用滤波器处理后再转换回空间域。
+
+  一个经典基准模型为 Graph WaveNet\cite{T-64}使用小波变换替代谱域图卷积中的傅里叶变换，分别计算特征变换和卷积，有效降低了计算的复杂度，并且利用小波变换的特点实现局部特征的提取。它使用自适应矩阵自动发现隐藏图结构，使用任意卷积学习时间关联。
+  
+  它有多个改版，其中 STD-MAE( \textbf{S}patial-\textbf{T}emporal-\textbf{D}ecoupled \textbf{M}asked \textbf{A}uto\textbf{e}ncoder)\cite{T-135}取得了目前在多个数据集上的 SOTA 表现。它的时空均使用了自编码器(AE)与自注意力，基于掩码(masked)做预训练。
+\end{frame}
+
+\begin{frame}{其他GNN}
+  \begin{block}{图编码器}
+    GNN 与 encoder-decoder 架构结合。如 DCRNN, STD-MAE 均使用了自编码器。许多模型均使用该架构。
+  \end{block}
+  \begin{block}{图注意力网络}
+    GNN 与注意力机制，Transformer 结合。
+  \end{block}
+  \begin{block}{其他}
+    GNN 与生成对抗网络(\textbf{G}enerative \textbf{A}dversarial \textbf{N}etworks)，如\cite{T-244}。
+
+    GNN 与模式分解结合，例如 PCA 或 EMD 分解\cite{T-247}。
+  \end{block}
+\end{frame}
+
+\begin{frame}{注意力机制}
+  注意力机制(Attention Mechanism)通过模仿人的信号处理策略来实现资源的不平均分配，为不同元素分配不同的权重以选择更有效的信息\cite{T-ZS26}。对时间的处理，可以使用时间注意力模块，或者与空间特征一起使用时空注意力模块。
+  
+  GAT(\textbf{G}raph \textbf{A}ttention \textbf{N}etwork)利用注意力机制来自适应学习节点间的连接关系，实现对邻节点的加权聚合。
+
+  \begin{itemize}
+    \item ASTGCN\cite{T-81}。在 STGCN 基础上，引入两个注意力层分别获取时空动态联系。
+    \item GaAN(\textbf{Ga}ted Attention Networks)\cite{T-88}。引入了自注意力机制，并使用一个卷积子网络来控制每个注意头的重要性，以 GaAN 为模块构建了图 GRU。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Transformer}
+  Transformer彻底抛弃了传统CNN和RNN结构，以注意力机制为模型基础，由自注意力和前馈神经网络组成，解决了RNN按序计算的限制，使序列中任意两个位置的距离在同一级别，解决了RNN长期依赖问题。\cite{T-ZS6}即可以学习时间特征也可以学习空间特征。
+
+  \begin{itemize}
+    \item STGNN(\textbf{S}patio-\textbf{T}emporal \textbf{G}raph \textbf{N}eural \textbf{N}etwork)\cite{T-173}。同时使用RNN和Transformer捕获局部和全局的时间相关性，一种新的具有位置级注意力的图神经网络。
+    \item Traffic Transformer\cite{T-202}。使用多头注意力机制和堆叠层结构，使Transformer学习数据中的动态和分层特征，提出全局与局部编码器组件来融合全局和局部空间特征。
+    \item 
+  \end{itemize}
 \end{frame}
 
 \section{数据集}
@@ -168,7 +282,7 @@
 \end{frame}
 
 \begin{frame}{经典数据集-PeMS}
-  PeMS(Caltrans \textbf{Pe}rformance \textbf{M}easurement \textbf{S}ystem)\cite{T-81}是研究最广泛的数据集之一，由美国加利福尼亚州主要公路的超过 $39000$ 个探测器收集而来，并从 $2001$ 年开始持续不断收集数据至今。这些数据每半分钟收集一次，并将其聚合成 $5$ 分钟一个时间段或其他粒度的数据。研究者主要使用 PeMS 的一些代表性子集，如PeMSD3、PeMSD4、PeMSD7、PeMSD8。如下表\ref{table:pems}所示。
+  PeMS(Caltrans \textbf{Pe}rformance \textbf{M}easurement \textbf{S}ystem)\footnote[frame]{\url{http://pems.dot.ca.gov/}}是研究最广泛的数据集之一，由美国加利福尼亚州主要公路的超过 $39000$ 个探测器收集而来，并从 $2001$ 年开始持续不断收集数据至今。这些数据每半分钟收集一次，并将其聚合成 $5$ 分钟一个时间段或其他粒度的数据。研究者主要使用 PeMS 的一些代表性子集，如PeMSD3、PeMSD4、PeMSD7、PeMSD8。\cite{T-81}如下表\ref{table:pems}所示。
 
   \setlength{\tabcolsep}{2pt}
   \begin{footnotesize}
@@ -205,24 +319,60 @@
   \end{table}
 \end{frame}
 
-\begin{frame}{其他时间序列数据集}
+% \begin{frame}{其他时间序列数据集}
   
-\end{frame}
+% \end{frame}
 
 \begin{frame}{其他组成成分}
-  
+  \begin{block}{时间与日期}
+    时间：如早晚高峰流量多、凌晨深夜流量少。
+
+    日期：工作日与周末，以及节假日。
+  \end{block}
+  \begin{block}{天气}
+    天气包括温度、湿度、降水、气压、风力等。\cite{T-ZS2}
+
+    一个具体例子见上文 TaxiBJ\cite{T-51}。另一个城市历史天气数据集可参考 \cite{T-70}。
+  \end{block}
+  \begin{block}{异常事件}
+    如交通事故，特殊事件(如大型活动等)。
+  \end{block}
+\end{frame}
+
+\section{实验}
+\begin{frame}{当前SOTA}
+  2024/10 的 paperwithcode\footnote{\url{https://paperswithcode.com/task/traffic-prediction}} 上各数据集的 SOTA(state of the art) 如图\ref{fig:sota-brief}所示。
+
+  \begin{figure}
+    \centering
+    \includegraphics[height=150pt]{img/sota-brief.jpg}
+    \caption{paperwithcode 各数据集 SOTA}\label{fig:sota-brief}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{当前SOTA}
+  2024/10 的 paperwithcode\footnote{\url{https://paperswithcode.com/sota/traffic-prediction-on-pems04}} 上 PEMS04 数据集的开源模型排名如图\ref{fig:sota-pems04}所示。
+
+  \begin{figure}
+    \centering
+    \includegraphics[height=150pt]{img/sota-pems04.jpg}
+    \caption{paperwithcode 各数据集 SOTA}\label{fig:sota-pems04}
+  \end{figure}
 \end{frame}
 
 \section{未来方向}
-
-\begin{frame}{写4}
-  abc
-\end{frame}
-
-\section{结论}
-
-\begin{frame}{写5}
-  abc
+\begin{frame}{未来方向}
+  \begin{enumerate}
+    \item 提升数据集质量。
+    \begin{itemize}
+      \item 现有数据集时间跨度短，样本少，包含信息不全面(如部分缺乏一年四季/深夜凌晨/事故等异常/天气等辅助数据)，使得实际应用价值受限。
+      \item 现在数据集过多，论文各用各的，用同一个也有不同的子集/参数等不同，不利于比较。
+      \item 其他质量问题：缺失、噪音、过时，近几年的数据较少。
+    \end{itemize}
+    \item 其他新问题。如使用持续学习让模型能在实时变化的数据表现良好；或者尝试轻量化等。
+    \item 模型可解释性。解释模型参数，神经网络的黑盒问题。
+    \item 应用新技术。如 Transformer, 物理模型(如 Ising 模型\cite{T-233})。
+  \end{enumerate}
 \end{frame}
 
 \begin{frame}[allowframebreaks, noframenumbering]
