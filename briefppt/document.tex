@@ -146,7 +146,7 @@
 \begin{frame}{RNN 简介}
   循环神经网络(\textbf{R}ecurrent \textbf{N}eural \textbf{N}etwork, RNN)广泛用于处理时间序列数据。其技术发展下图\ref{fig:rnn-develop}所示。
 
-  RNN 的优点为长短的时间依赖都可以良好记忆，但易产生梯度消失与爆炸问题，且训练时间长。\cite{T-ZS1}
+  RNN 的优点为长短的时间依赖都可以良好记忆，但缺点为易产生梯度消失与爆炸问题，且训练时间长。\cite{T-ZS1}
   \begin{figure}
     \centering
     \includegraphics[height=80pt]{img/rnn-develop.png}
@@ -156,7 +156,7 @@
 \end{frame}
 
 \begin{frame}{RNN 具体使用举例}
-  常用的两种 RNN 为 LSTM(\textbf{L}ong \textbf{S}hort-\textbf{T}erm \textbf{M}emory)和GRU(\textbf{G}ated \textbf{R}ecurrent \textbf{U}nit)。包括但不限于下面的使用思路，可以只学习时间特征，也可以同时学习时空特征。
+  常用的两种 RNN 为 LSTM(\textbf{L}ong \textbf{S}hort-\textbf{T}erm \textbf{M}emory)和GRU(\textbf{G}ated \textbf{R}ecurrent \textbf{U}nit)。可以只学习时间特征，也可以同时学习时空特征。包括但不限于下面的使用思路。
   \begin{itemize}
     \item 直接使用。用GRU学习时间特征\cite{T-36}。二维LSTM直接表示时空\cite{T-46}。
     \item 多个RNN。用2个LSTM分别学习短时间特征，周期时间特征\cite{T-3}。
@@ -233,7 +233,7 @@
     GNN 与注意力机制，Transformer 结合。
   \end{block}
   \begin{block}{其他}
-    GNN 与生成对抗网络(\textbf{G}enerative \textbf{A}dversarial \textbf{N}etworks)，如\cite{T-244}。
+    GNN 与生成对抗网络(\textbf{G}enerative \textbf{A}dversarial \textbf{N}etworks)结合，如\cite{T-244}。
 
     GNN 与模式分解结合，例如 PCA 或 EMD 分解\cite{T-247}。
   \end{block}
@@ -251,7 +251,7 @@
 \end{frame}
 
 \begin{frame}{Transformer}
-  Transformer彻底抛弃了传统CNN和RNN结构，以注意力机制为模型基础，由自注意力和前馈神经网络组成，解决了RNN按序计算的限制，使序列中任意两个位置的距离在同一级别，解决了RNN长期依赖问题。\cite{T-ZS6}即可以学习时间特征也可以学习空间特征。
+  Transformer彻底抛弃了传统CNN和RNN结构，以注意力机制为模型基础，由自注意力和前馈神经网络组成，解决了RNN按序计算的限制，使序列中任意两个位置的距离在同一级别，解决了RNN长期依赖问题\cite{T-ZS6}。既可以学习时间特征也可以学习空间特征。
 
   \begin{itemize}
     \item STGNN(\textbf{S}patio-\textbf{T}emporal \textbf{G}raph \textbf{N}eural \textbf{N}etwork)\cite{T-173}。同时使用RNN和Transformer捕获局部和全局的时间相关性，一种新的具有位置级注意力的图神经网络。

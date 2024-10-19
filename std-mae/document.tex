@@ -1,0 +1,56 @@
+\documentclass{libs/format}
+\usepackage{hyperref}
+\input{libs/preamble.tex}
+\setbeamertemplate{caption}[numbered]
+\bibliography{../article/thesis.bib}
+\AtEveryBibitem{\clearfield{url}}  % 不显示 URL
+\AtEveryBibitem{\clearfield{doi}}
+\AtEveryBibitem{\clearfield{issn}}
+
+\title[STD-MAE]{Spatial-Temporal-Decoupled Masked Pre-training for Spatiotemporal Forecasting}
+
+% 可选：标题页显示的副标题
+\subtitle{accepted by IJCAI2024, Gao et al.}
+
+\institute[Sun Yat-Sen University]{\normalsize 中山大学人工智能学院}
+
+\date[\ctoday]{\ctoday}
+
+\begin{document}
+
+\input{libs/code_style.tex}
+
+% 作者信息
+\author[Zixin Qin]{\large 汇报人：覃梓鑫}
+
+\begin{frame}
+  % 标题页
+  \titlepage
+\end{frame}
+
+\AtBeginSection[]
+{
+	\begin{frame}{目录}
+		\tableofcontents[currentsection, subsectionstyle=shaded]
+    \addtocounter{framenumber}{-1}
+	\end{frame}
+}
+\AtBeginSubsection[]
+{
+	\begin{frame}{章节目录}
+		\tableofcontents[currentsection, currentsubsection]
+    \addtocounter{framenumber}{-1}
+	\end{frame}
+}
+
+\section{介绍}
+
+\begin{frame}{介绍}
+  介绍
+\end{frame}
+
+\begin{frame}[allowframebreaks, noframenumbering]
+    \printbibliography[title = {参考文献}]
+\end{frame}
+
+\end{document}
